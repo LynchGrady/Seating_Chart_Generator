@@ -1,61 +1,33 @@
+import pandas as pd
 import Student
 import random
 
 # Create a dictionary to store table info, key => table number, value => list of students at table
 tables = {1 : [], 2 : [], 3 : [], 4 : [], 5 : [], 6 : [], 7 : []}
 
-# Create roster of student objects
+# Read roster spreadsheet into dataframe
+
+rosterFrame = pd.read_excel('period1.xlsx')
+rosterFrame.fillna('none')
+
+# convert dataframe data into student objects in list 'roster'
+
 roster = []
 
-chris = Student.Student('chris')
-chris.cant_sit_with.append('darwin')
-roster.append(chris)
+for ind in rosterFrame.index:
 
-darwin = Student.Student('darwin')
-darwin.cant_sit_with.append('chris')
-roster.append(darwin)
+    roster.append(Student.Student(rosterFrame['First Name'][ind]))
 
-kellen = Student.Student('kellen')
-roster.append(kellen)
+    if str(rosterFrame['No'][ind]) != 'none':
 
-eddy = Student.Student('eddy')
-roster.append(eddy)
-
-aiden = Student.Student('aiden')
-roster.append(aiden)
-
-amy = Student.Student('amy')
-roster.append(amy)
-
-joshua_h = Student.Student('joshua h')
-joshua_h.cant_sit_with.append('chris')
-joshua_h.cant_sit_with.append('darwin')
-roster.append(joshua_h)
-
-landon = Student.Student('landon')
-roster.append(landon)
-
-olive = Student.Student('olive')
-roster.append(olive)
-
-maxamilian = Student.Student('maxamilian')
-roster.append(maxamilian)
-
-king = Student.Student('king')
-roster.append(king)
-
-cameron = Student.Student('cameron')
-cameron.cant_sit_with.append('ferris')
-roster.append(cameron)
-
-ferris = Student.Student('ferris')
-ferris.cant_sit_with.append('cameron')
-roster.append(ferris)
+        roster[ind].cant_sit_with = (str(rosterFrame['No'][ind])).split(', ')
 
 
 
 # Create duplicate of roster named students that we can modify during the process
 students = roster.copy()
+
+# Method for generating random seating chart
 
 cont = True
 
